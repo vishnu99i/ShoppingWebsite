@@ -136,7 +136,7 @@ module.exports = {
             */
 
          ]).toArray()
-         console.log(cartItems[0].products)
+         //console.log(cartItems[0].products)
          console.log(cartItems)
          resolve(cartItems)
       })
@@ -154,16 +154,32 @@ module.exports = {
    changeProductQuantity:(details) => {
 
       details.count = parseInt(details.count)
+      console.log(details.count)
+      details.quantity = parseInt(details.quantity)
+      console.log(details.quantity)
 
       return new Promise((resolve,reject) => {
-         db.get().collection(collection.CART_COLLECTION)
-               .updateOne({_id:objectId(details.cart),'products.item' : objectId(details.product)},
-               {
-                  $inc:{'products.$.quantity':details.count}//For an array $ symbol is used to change an element in an array
-               }
-               ).then((response) => {
-                  resolve()
-               })
+ 
+         if(details.count == -1 && details.quantity == 1){
+            db.get().collection(collection.CART_COLLECTION)
+            .updateOne({_id:objectId(details.cart)},
+            {
+               $pull:{products:{item:objectId(details.product)}}
+            }
+            ).then((response) => {
+               resolve({removeProduct:true})
+            })
+         }else{
+            db.get().collection(collection.CART_COLLECTION)
+            .updateOne({_id:objectId(details.cart),'products.item':objectId(details.product)},
+            {
+               $inc:{'products.$.quantity':details.count}//For an array $ symbol is used to change an element in an array
+            }
+            ).then((response) => {
+               resolve(true)
+            })
+         }
+      
       })
    }
 

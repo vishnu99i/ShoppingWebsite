@@ -151,6 +151,7 @@ module.exports = {
          resolve(count)
       })
    },
+
    changeProductQuantity:(details) => {
 
       details.count = parseInt(details.count)
@@ -176,7 +177,7 @@ module.exports = {
                $inc:{'products.$.quantity':details.count}//For an array $ symbol is used to change an element in an array
             }
             ).then((response) => {
-               resolve(true)
+               resolve({status:true})
             })
          }
       

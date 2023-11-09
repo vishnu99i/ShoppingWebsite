@@ -92,3 +92,6 @@ session created for signup => user.js
 Add to cart
 
 Bootstrap notification icon with count(Badges)
+
+Razorpay integration
+Razorpay npm module => npm i razorpay
